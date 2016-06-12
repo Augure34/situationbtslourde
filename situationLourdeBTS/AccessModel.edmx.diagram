@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9c238e43ed73432f97589a5dc3b246ab" Name="Diagram1">
+        <EntityTypeShape EntityType="AccessModel.Employee" Width="1.625" PointX="6.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AccessModel.Room" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AccessModel.SecurityLevel" Width="1.5" PointX="3.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AccessModel.sysdiagram" Width="1.5" PointX="8.125" PointY="5" IsExpanded="false" />
+        <AssociationConnector Association="AccessModel.FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId" ManuallyRouted="false" />
+        <AssociationConnector Association="AccessModel.AccessRooms" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

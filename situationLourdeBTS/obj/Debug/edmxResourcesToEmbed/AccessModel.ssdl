@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AccessModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="AccessModelStoreContainer">
+    <EntitySet Name="Employees" EntityType="AccessModel.Store.Employees" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Rooms" EntityType="AccessModel.Store.Rooms" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SecurityLevels" EntityType="AccessModel.Store.SecurityLevels" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="sysdiagrams" EntityType="AccessModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AccessRooms" EntityType="AccessModel.Store.AccessRooms" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId" Association="AccessModel.Store.FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId">
+      <End Role="SecurityLevels" EntitySet="SecurityLevels" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AccessRooms_Rooms" Association="AccessModel.Store.FK_AccessRooms_Rooms">
+      <End Role="Rooms" EntitySet="Rooms" />
+      <End Role="AccessRooms" EntitySet="AccessRooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AccessRooms_SecurityLevels" Association="AccessModel.Store.FK_AccessRooms_SecurityLevels">
+      <End Role="SecurityLevels" EntitySet="SecurityLevels" />
+      <End Role="AccessRooms" EntitySet="AccessRooms" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SecurityLevelId" Type="int" Nullable="false" />
+    <Property Name="ClearanceExpiration" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Rooms">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="SecurityLevels">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" Nullable="true" />
+    <Property Name="definition" Type="varbinary(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="AccessRooms">
+    <Key>
+      <PropertyRef Name="Rooms_Id" />
+      <PropertyRef Name="SecurityLevels_Id" />
+    </Key>
+    <Property Name="Rooms_Id" Type="int" Nullable="false" />
+    <Property Name="SecurityLevels_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId">
+    <End Role="SecurityLevels" Type="AccessModel.Store.SecurityLevels" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Employees" Type="AccessModel.Store.Employees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SecurityLevels">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="SecurityLevelId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AccessRooms_Rooms">
+    <End Role="Rooms" Type="AccessModel.Store.Rooms" Multiplicity="1" />
+    <End Role="AccessRooms" Type="AccessModel.Store.AccessRooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rooms">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AccessRooms">
+        <PropertyRef Name="Rooms_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AccessRooms_SecurityLevels">
+    <End Role="AccessRooms" Type="AccessModel.Store.AccessRooms" Multiplicity="*" />
+    <End Role="SecurityLevels" Type="AccessModel.Store.SecurityLevels" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="SecurityLevels">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AccessRooms">
+        <PropertyRef Name="SecurityLevels_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

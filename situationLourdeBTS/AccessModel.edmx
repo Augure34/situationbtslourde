@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AccessModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="AccessModelStoreContainer">
+    <EntitySet Name="Employees" EntityType="AccessModel.Store.Employees" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Rooms" EntityType="AccessModel.Store.Rooms" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="SecurityLevels" EntityType="AccessModel.Store.SecurityLevels" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="sysdiagrams" EntityType="AccessModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AccessRooms" EntityType="AccessModel.Store.AccessRooms" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId" Association="AccessModel.Store.FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId">
+      <End Role="SecurityLevels" EntitySet="SecurityLevels" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AccessRooms_Rooms" Association="AccessModel.Store.FK_AccessRooms_Rooms">
+      <End Role="Rooms" EntitySet="Rooms" />
+      <End Role="AccessRooms" EntitySet="AccessRooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AccessRooms_SecurityLevels" Association="AccessModel.Store.FK_AccessRooms_SecurityLevels">
+      <End Role="SecurityLevels" EntitySet="SecurityLevels" />
+      <End Role="AccessRooms" EntitySet="AccessRooms" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Employees">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="SecurityLevelId" Type="int" Nullable="false" />
+    <Property Name="ClearanceExpiration" Type="datetime" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Rooms">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="SecurityLevels">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" Nullable="true" />
+    <Property Name="definition" Type="varbinary(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="AccessRooms">
+    <Key>
+      <PropertyRef Name="Rooms_Id" />
+      <PropertyRef Name="SecurityLevels_Id" />
+    </Key>
+    <Property Name="Rooms_Id" Type="int" Nullable="false" />
+    <Property Name="SecurityLevels_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId">
+    <End Role="SecurityLevels" Type="AccessModel.Store.SecurityLevels" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Employees" Type="AccessModel.Store.Employees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SecurityLevels">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="SecurityLevelId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AccessRooms_Rooms">
+    <End Role="Rooms" Type="AccessModel.Store.Rooms" Multiplicity="1" />
+    <End Role="AccessRooms" Type="AccessModel.Store.AccessRooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rooms">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AccessRooms">
+        <PropertyRef Name="Rooms_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AccessRooms_SecurityLevels">
+    <End Role="AccessRooms" Type="AccessModel.Store.AccessRooms" Multiplicity="*" />
+    <End Role="SecurityLevels" Type="AccessModel.Store.SecurityLevels" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="SecurityLevels">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AccessRooms">
+        <PropertyRef Name="SecurityLevels_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AccessModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityLevelId" Type="Int32" Nullable="false" />
+          <Property Name="ClearanceExpiration" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="SecurityLevel" Relationship="Self.FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId" FromRole="Employees" ToRole="SecurityLevels" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SecurityLevels" Relationship="Self.AccessRooms" FromRole="Rooms" ToRole="SecurityLevels" />
+        </EntityType>
+        <EntityType Name="SecurityLevel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId" FromRole="SecurityLevels" ToRole="Employees" />
+          <NavigationProperty Name="Rooms" Relationship="Self.AccessRooms" FromRole="SecurityLevels" ToRole="Rooms" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId">
+          <End Role="SecurityLevels" Type="Self.SecurityLevel" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SecurityLevels">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="SecurityLevelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AccessRooms">
+          <End Role="Rooms" Type="Self.Room" Multiplicity="*" />
+          <End Role="SecurityLevels" Type="Self.SecurityLevel" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="AccessContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Rooms" EntityType="Self.Room" />
+          <EntitySet Name="SecurityLevels" EntityType="Self.SecurityLevel" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId" Association="Self.FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId">
+            <End Role="SecurityLevels" EntitySet="SecurityLevels" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="AccessRooms" Association="Self.AccessRooms">
+            <End Role="Rooms" EntitySet="Rooms" />
+            <End Role="SecurityLevels" EntitySet="SecurityLevels" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AccessModelStoreContainer" CdmEntityContainer="AccessContext">
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="IsTypeOf(AccessModel.Employee)">
+        <MappingFragment StoreEntitySet="Employees">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="SecurityLevelId" ColumnName="SecurityLevelId" />
+          <ScalarProperty Name="ClearanceExpiration" ColumnName="ClearanceExpiration" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rooms">
+      <EntityTypeMapping TypeName="IsTypeOf(AccessModel.Room)">
+        <MappingFragment StoreEntitySet="Rooms">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SecurityLevels">
+      <EntityTypeMapping TypeName="IsTypeOf(AccessModel.SecurityLevel)">
+        <MappingFragment StoreEntitySet="SecurityLevels">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="IsTypeOf(AccessModel.sysdiagram)">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="AccessRooms" TypeName="AccessModel.AccessRooms" StoreEntitySet="AccessRooms">
+      <EndProperty Name="Rooms">
+        <ScalarProperty Name="Id" ColumnName="Rooms_Id" />
+      </EndProperty>
+      <EndProperty Name="SecurityLevels">
+        <ScalarProperty Name="Id" ColumnName="SecurityLevels_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

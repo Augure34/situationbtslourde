@@ -1,0 +1,43 @@
+﻿<Window x:Class="situationLourdeBTS.Gestionnaire"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:situationLourdeBTS"
+        xmlns:p="clr-namespace:situationLourdeBTS.Properties"
+        mc:Ignorable="d"
+        Title="Gestionnaire" Height="600" Width="1052" Background="#FFAAAAAA" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="employeeViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Room}, CreateList=True}"/>
+        <CollectionViewSource x:Key="roomViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Room}, CreateList=True}"/>
+        <CollectionViewSource x:Key="securityLevelViewSource" d:DesignSource="{d:DesignInstance {x:Type local:SecurityLevel}, CreateList=True}"/>
+    </Window.Resources>
+    <Grid x:Name="MainGrid">
+        <Grid.Resources>
+            <local:BoolToEnumConverter x:Key="boolToEnumConverter"/>
+        </Grid.Resources>
+        <ComboBox x:Name="DatabaseComboBox" HorizontalAlignment="Left" Margin="422,25,0,0" VerticalAlignment="Top" Width="131" Height="34" SelectedIndex="0" FontSize="16" ItemsSource="{Binding Source={x:Static p:Settings.Default}, Path=Connections}" SelectedValuePath="Key" DisplayMemberPath="Key">
+
+        </ComboBox>
+        <Label x:Name="label" Content="Base actuelle:" Margin="444,3,352,535"/>
+        <Button x:Name="NewBaseButton" Content="Nouvelle base" HorizontalAlignment="Left" Margin="422,86,0,0" VerticalAlignment="Top" Width="131" Height="43" Click="NewBaseButton_Click"/>
+        <Button x:Name="PropertiesButton" Content="Propriétées de la base" HorizontalAlignment="Left" Margin="582,86,0,0" VerticalAlignment="Top" Width="140" Height="43" Click="PropertiesButton_Click"/>
+        <Button x:Name="ConnexionButton" Content="Connexion" HorizontalAlignment="Left" Margin="582,25,0,0" VerticalAlignment="Top" Width="140" Height="34" Click="ConnexionButton_Click"/>
+        <Separator HorizontalAlignment="Left" Height="41" Margin="360,129,0,0" VerticalAlignment="Top" Width="377"/>
+        <Button x:Name="AddUserButton" Content="Ajout utilisateur" HorizontalAlignment="Left" Margin="500,171,0,0" VerticalAlignment="Top" Width="140" Height="43" Click="AddUserButton_Click"/>
+        <Separator HorizontalAlignment="Left" Height="41" Margin="360,219,0,0" VerticalAlignment="Top" Width="377"/>
+        <RadioButton x:Name="EmployeesRadioButton" Content="Utilisateurs" Tag="0" HorizontalAlignment="Left" Margin="27,28,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="RoomsRadioButton" Content="Salles" Tag="1" HorizontalAlignment="Left" Margin="117,28,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="SecClearancesRadioButton" Content="Niveaux de sécurité" Tag="2" HorizontalAlignment="Left" Margin="187,28,0,0" VerticalAlignment="Top" IsChecked="True"/>
+        <Button x:Name="AddRoomButton" Content="Ajout salle" HorizontalAlignment="Left" Margin="500,271,0,0" VerticalAlignment="Top" Width="140" Height="43" Click="AddRoomButton_Click"/>
+        <Separator HorizontalAlignment="Left" Height="41" Margin="360,319,0,0" VerticalAlignment="Top" Width="377"/>
+        <Button x:Name="AddSecClearanceButton" Content="Ajout sécurité" HorizontalAlignment="Left" Margin="500,371,0,0" VerticalAlignment="Top" Width="140" Height="43" Click="AddSecClearanceButton_Click"/>
+        <Separator HorizontalAlignment="Left" Height="41" Margin="360,414,0,0" VerticalAlignment="Top" Width="377"/>
+        <Button x:Name="SaveButton" Content="Sauvegarder" HorizontalAlignment="Left" Margin="150,493,0,0" VerticalAlignment="Top" Width="106" Height="50" Click="SaveButton_Click"/>
+        <Button x:Name="QuitButton" Content="Quitter" HorizontalAlignment="Left" Margin="558,493,0,0" VerticalAlignment="Top" Width="106" Height="50" Click="QuitButton_Click"/>
+        <DataGrid x:Name="securityLevelDataGrid" IsReadOnly="True" AutoGenerateColumns="True" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="10,60,660,96" RowDetailsVisibilityMode="VisibleWhenSelected" AutoGeneratingColumn="securityLevelDataGrid_AutoGeneratingColumn" ColumnWidth="*" SelectionChanged="securityLevelDataGrid_SelectionChanged"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="534" Margin="744,19,0,0" VerticalAlignment="Top" Width="279"/>
+        <ContentControl x:Name="ControlArea" Content="" HorizontalAlignment="Left" Margin="744,22,0,0" VerticalAlignment="Top" Height="{DynamicResource MainContentControl_Height}" Width="{DynamicResource MainContentControl_Width}"/>
+
+    </Grid>
+</Window>

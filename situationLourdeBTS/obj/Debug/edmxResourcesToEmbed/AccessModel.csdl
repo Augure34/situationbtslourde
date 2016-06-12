@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AccessModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityLevelId" Type="Int32" Nullable="false" />
+    <Property Name="ClearanceExpiration" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="SecurityLevel" Relationship="Self.FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId" FromRole="Employees" ToRole="SecurityLevels" />
+  </EntityType>
+  <EntityType Name="Room">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SecurityLevels" Relationship="Self.AccessRooms" FromRole="Rooms" ToRole="SecurityLevels" />
+  </EntityType>
+  <EntityType Name="SecurityLevel">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Employees" Relationship="Self.FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId" FromRole="SecurityLevels" ToRole="Employees" />
+    <NavigationProperty Name="Rooms" Relationship="Self.AccessRooms" FromRole="SecurityLevels" ToRole="Rooms" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId">
+    <End Role="SecurityLevels" Type="Self.SecurityLevel" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SecurityLevels">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Employees">
+        <PropertyRef Name="SecurityLevelId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AccessRooms">
+    <End Role="Rooms" Type="Self.Room" Multiplicity="*" />
+    <End Role="SecurityLevels" Type="Self.SecurityLevel" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="AccessContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Rooms" EntityType="Self.Room" />
+    <EntitySet Name="SecurityLevels" EntityType="Self.SecurityLevel" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId" Association="Self.FK_dbo_Employees_dbo_SecurityLevels_SecurityLevelsId">
+      <End Role="SecurityLevels" EntitySet="SecurityLevels" />
+      <End Role="Employees" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="AccessRooms" Association="Self.AccessRooms">
+      <End Role="Rooms" EntitySet="Rooms" />
+      <End Role="SecurityLevels" EntitySet="SecurityLevels" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
